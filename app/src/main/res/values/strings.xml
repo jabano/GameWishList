@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Wish List</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_title">Title</string>
+    <string name="button_save">Save</string>
+    <string name="button_update">Update</string>
+    <string name="empty">Game not saved. Missing a field.</string>
+    <string-array name="platform_array">
+        <item>Switch</item>
+        <item>PC</item>
+        <item>PS4</item>
+    </string-array>
+    <string-array name="genre_array">
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Music</item>
+        <item>RPG</item>
+        <item>Simulation</item>
+        <item>Sports</item>
+        <item>Strategy</item>
+    </string-array>
+    <string-array name="cost_array">
+        <item>$0.00 - $9.99</item>
+        <item>$10.00 - $19.99</item>
+        <item>$20.00 - $29.99</item>
+        <item>$30.00 - $39.99</item>
+        <item>$40.00 - $49.99</item>
+        <item>$50.00 - $59.99</item>
+        <item>$60.00 - $69.99</item>
+        <item>$70.00 - $79.99</item>
+        <item> > $80.00</item>
+    </string-array>
+    <string-array name="interest_array">
+        <item>3/5</item>
+        <item>4/5</item>
+        <item>5/5</item>
+    </string-array>
+</resources>
