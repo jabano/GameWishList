@@ -4,7 +4,7 @@
 
 ## Checklist
 
+- [x] Add onClick to delete game
 - [ ] Add onClick to update game
-- [ ] Add onClick to delete game
 - [ ] Add filters to sort by a category
 - [ ] Add notifications based on release date

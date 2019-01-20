@@ -1,20 +1,45 @@
 package com.example.jeneska.gamewishlist;
 
+import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder> {
 
-    class GameViewHolder extends RecyclerView.ViewHolder {
+    private final LayoutInflater mInflater;
+    private List<Game> mGames;
+
+    //added
+    private OnGameItemClickListener onGameItemClickListener;
+
+    //interface so that adapter can handle clicks in the MainActivity
+    public interface OnGameItemClickListener {
+        void onGameItemClick(int position);
+    }
+
+    GameAdapter(Context mContext) {
+        mInflater = LayoutInflater.from(mContext);
+        this.onGameItemClickListener = (OnGameItemClickListener) mContext;
+    }
+
+    //added implements view.onclicklistener
+    class GameViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView titleTextView, platformTextView, genreTextView, costRangeTextView, interestTextView, releaseDateTextView;
 
-        private GameViewHolder(View itemView) {
+        //added
+        private OnGameItemClickListener onGameItemClickListener;
+
+        private GameViewHolder(View itemView, OnGameItemClickListener onGameItemClickListener) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.textViewTitle);
             platformTextView = itemView.findViewById(R.id.textViewPlatform);
@@ -22,18 +47,23 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
             costRangeTextView = itemView.findViewById(R.id.textViewCostRange);
             interestTextView = itemView.findViewById(R.id.textViewInterest);
             releaseDateTextView = itemView.findViewById(R.id.textViewReleaseDate);
+
+            //added
+            this.onGameItemClickListener = onGameItemClickListener;
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            onGameItemClickListener.onGameItemClick(getAdapterPosition());
         }
     }
-
-    private final LayoutInflater mInflater;
-    private List<Game> mGames;
-
-    GameAdapter(Context mContext) { mInflater = LayoutInflater.from(mContext); }
 
     @Override
     public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new GameViewHolder(itemView);
+        return new GameViewHolder(itemView, onGameItemClickListener);
     }
 
     @Override
@@ -46,9 +76,6 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
             holder.costRangeTextView.setText(current.getCostRange());
             holder.interestTextView.setText(current.getInterest());
             holder.releaseDateTextView.setText(current.getReleaseDate());
-        }
-        else{
-            holder.titleTextView.setText("No Word");
         }
     }
 
@@ -64,7 +91,9 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         else return 0;
     }
 
-    public interface OnGameItemClick{
-        void onGameClick(int pos);
+    public Game getGameAtPosition(int position) {
+        return mGames.get(position);
     }
+
+
 }

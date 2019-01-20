@@ -25,6 +25,9 @@ public class GameRepository {
         new insertAsyncTask(mGameDao).execute(game);
     }
 
+    //added
+    public void delete (Game game) { new deleteAsyncTask(mGameDao).execute(game);}
+
     private static class insertAsyncTask extends AsyncTask<Game, Void, Void> {
         private GameDao mAsyncTaskDao;
 
@@ -35,6 +38,22 @@ public class GameRepository {
         @Override
         protected Void doInBackground(final Game... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    //added
+
+    private static class deleteAsyncTask extends AsyncTask<Game, Void, Void> {
+        private GameDao mAsyncTaskDao;
+
+        deleteAsyncTask(GameDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Game... params) {
+            mAsyncTaskDao.delete(params[0]);
             return null;
         }
     }
