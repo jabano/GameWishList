@@ -15,9 +15,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,9 +28,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements GameAdapter.OnGameItemClickListener {
 
     private GameViewModel mGameViewModel;
-    public static final int NEW_GAME_ACTIVITY_REQUEST_CODE = 1;
     private GameAdapter adapter;
-
+    public static final int NEW_GAME_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,23 +70,32 @@ public class MainActivity extends AppCompatActivity implements GameAdapter.OnGam
 
     @Override
     public void onGameItemClick(final int position) {
-
         final Game game = adapter.getGameAtPosition(position);
+        final String[] options = {"Delete", "Update"};
+        final int[] selected = new int[1]; //keeping track of the option selected
 
-        new AlertDialog.Builder(MainActivity.this).setTitle("Select Options").setItems(
-                new String[]{"Delete", "Update"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        switch (i) {
-
-                            //delete game
-                            case 0:
-                                mGameViewModel.delete(game);
-                                break;
-
-                        }
-                    }
-                }).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Select Options").setSingleChoiceItems(options, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //get checked item
+//                ListView view = ((AlertDialog)dialog).getListView();
+//                Object checkedItem = view.getAdapter().getItem(view.getCheckedItemPosition());
+                selected[0] = which;
+            }
+        }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (options[selected[0]] == "Delete") {
+                    mGameViewModel.delete(game);
+                }
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //cancel
+            }
+        }).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -101,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements GameAdapter.OnGam
             Toast.makeText(getApplicationContext(), R.string.empty, Toast.LENGTH_LONG).show();
         }
     }
-
 }
 
 
